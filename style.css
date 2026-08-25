@@ -4,698 +4,415 @@
     box-sizing: border-box;
 }
 
-
 :root {
     --bg: #080808;
-    --card: #101010;
+    --surface: #101010;
+    --surface-hover: #141414;
     --border: #202020;
-
     --text: #f5f5f5;
     --muted: #777;
-
-    --accent: #ffffff;
+    --accent: #fff;
+    --shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    --radius: 18px;
 }
 
+body.light {
+    --bg: #f5f5f5;
+    --surface: #fff;
+    --surface-hover: #fafafa;
+    --border: #ddd;
+    --text: #111;
+    --muted: #777;
+    --accent: #111;
+    --shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+html {
+    scroll-behavior: smooth;
+}
 
 body {
     min-height: 100vh;
-
     background: var(--bg);
     color: var(--text);
-
-    font-family:
-        Inter,
-        Arial,
-        sans-serif;
-
-    transition:
-        background .3s ease,
-        color .3s ease;
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
-
-body.light {
-
-    --bg: #f5f5f5;
-    --card: #ffffff;
-    --border: #dddddd;
-
-    --text: #111111;
-    --muted: #777777;
-
-    --accent: #111111;
+button,
+input {
+    font: inherit;
 }
 
+button {
+    cursor: pointer;
+}
 
-/* =========================
-   HEADER
-========================= */
+a {
+    color: inherit;
+}
 
-header {
+.header,
+.container {
+    width: min(1100px, 90%);
+    margin-inline: auto;
+}
 
-    width: 90%;
-    max-width: 1100px;
-
-    height: 80px;
-
-    margin: auto;
-
+.header {
+    min-height: 80px;
     display: flex;
-
     align-items: center;
     justify-content: space-between;
 }
 
-
 .logo {
-
+    color: var(--text);
     font-size: 25px;
-
     font-weight: 800;
-
     letter-spacing: -1px;
+    text-decoration: none;
 }
-
 
 .logo span {
-    color: #777;
+    color: var(--muted);
 }
 
-
-#themeBtn {
-
+.theme-toggle {
     width: 42px;
     height: 42px;
-
     border: 1px solid var(--border);
-
     border-radius: 50%;
-
-    background: var(--card);
+    background: var(--surface);
     color: var(--text);
-
-    cursor: pointer;
-
-    transition: .25s;
+    transition: transform 0.25s ease, background 0.25s ease;
 }
 
-
-#themeBtn:hover {
-    transform: rotate(20deg);
+.theme-toggle:hover {
+    transform: rotate(15deg);
+    background: var(--surface-hover);
 }
-
-
-/* =========================
-   MAIN
-========================= */
-
-main {
-
-    width: 90%;
-    max-width: 1100px;
-
-    margin: auto;
-}
-
-
-/* =========================
-   HERO
-========================= */
 
 .hero {
-
-    padding: 75px 0;
-
+    padding: 80px 0 75px;
     text-align: center;
-
-    position: relative;
 }
 
-
-#date {
-
-    color: var(--muted);
-
-    font-size: 14px;
-
+.date {
     margin-bottom: 22px;
-
+    color: var(--muted);
+    font-size: 14px;
     text-transform: capitalize;
 }
 
-
-/* =========================
-   FUTURISTIC CLOCK
-========================= */
-
 .clock-wrap {
-
     position: relative;
-
     width: fit-content;
-
-    margin: auto;
+    margin: 0 auto;
 }
 
-
-#clock {
-
+.clock {
     position: relative;
-
-    font-size:
-        clamp(58px, 11vw, 115px);
-
-    line-height: 1;
-
-    letter-spacing: -7px;
-
+    z-index: 2;
+    font-size: clamp(58px, 11vw, 115px);
     font-weight: 800;
-
-    background:
-        linear-gradient(180deg,
-            var(--text),
-            #666);
-
+    line-height: 1;
+    letter-spacing: -7px;
+    background: linear-gradient(180deg, var(--text) 10%, #666 90%);
     -webkit-background-clip: text;
     background-clip: text;
-
     color: transparent;
-
-    z-index: 2;
 }
 
-
-/* orbit ring */
-
-.clock-wrap::before {
-
-    content: "";
-
+.clock-orbit {
     position: absolute;
-
-    width: 135%;
-    height: 180%;
-
-    left: -17.5%;
-    top: -40%;
-
-    border:
-
-        1px solid color-mix(in srgb,
-            var(--text) 12%,
-            transparent);
-
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 50%;
-
-    transform:
-        rotate(-8deg);
-
     pointer-events: none;
 }
 
-
-/* second orbit */
-
-.clock-wrap::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 118%;
-    height: 145%;
-
-    left: -9%;
-    top: -22%;
-
-    border:
-
-        1px dashed color-mix(in srgb,
-            var(--text) 8%,
-            transparent);
-
-    border-radius: 50%;
-
-    transform:
-        rotate(12deg);
-
-    animation:
-        orbit 12s linear infinite;
-
-    pointer-events: none;
+body.light .clock-orbit {
+    border-color: rgba(0, 0, 0, 0.08);
 }
 
+.clock-orbit--one {
+    inset: -40% -18%;
+    transform: rotate(-8deg);
+}
+
+.clock-orbit--two {
+    inset: -22% -9%;
+    border-style: dashed;
+    animation: orbit 12s linear infinite;
+}
+
+.clock-dot {
+    position: absolute;
+    top: 12%;
+    left: 5%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--text);
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.5);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.greeting {
+    margin-top: 25px;
+    color: var(--muted);
+    font-size: 18px;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    padding: 30px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    transition: transform 0.25s ease, border-color 0.25s ease, background 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    border-color: #333;
+}
+
+body.light .card:hover {
+    border-color: #ccc;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.eyebrow {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+}
+
+.card h2 {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.progress-value {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.progress {
+    height: 5px;
+    margin: 25px 0;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--border);
+}
+
+.progress-bar {
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--accent);
+    transition: width 0.35s ease;
+}
+
+.task-form {
+    display: flex;
+    gap: 8px;
+}
+
+.task-input,
+.task-form input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    background: transparent;
+    color: var(--text);
+    transition: border-color 0.2s ease;
+}
+
+.task-form input::placeholder {
+    color: var(--muted);
+}
+
+.task-form input:focus {
+    border-color: var(--muted);
+}
+
+#addBtn {
+    width: 48px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 22px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+#addBtn:hover {
+    transform: scale(1.04);
+    opacity: 0.9;
+}
+
+.task-list {
+    margin-top: 4px;
+}
+
+.task {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.task:last-child {
+    border-bottom: 0;
+}
+
+.task input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--text);
+}
+
+.task-text {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.task.done .task-text {
+    color: var(--muted);
+    text-decoration: line-through;
+}
+
+.delete-task {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font-size: 18px;
+    transition: color 0.2s ease;
+}
+
+.delete-task:hover {
+    color: var(--text);
+}
+
+.quote-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+}
+
+.quote {
+    margin: 40px 0;
+    font-size: 25px;
+    line-height: 1.5;
+}
+
+.quote-mark {
+    color: var(--muted);
+    font-size: 50px;
+    line-height: 0.4;
+}
+
+.quote-button {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.quote-button:hover {
+    background: var(--text);
+    color: var(--bg);
+}
+
+.footer {
+    padding: 70px 0 30px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.footer a {
+    margin-left: 4px;
+    color: var(--text);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    transition: opacity 0.2s ease;
+}
+
+.footer a:hover {
+    opacity: 0.55;
+}
 
 @keyframes orbit {
-
     from {
-        transform:
-            rotate(12deg);
+        transform: rotate(12deg);
     }
 
     to {
-        transform:
-            rotate(372deg);
+        transform: rotate(372deg);
     }
 }
-
-
-.clock-decoration {
-
-    position: absolute;
-
-    width: 7px;
-    height: 7px;
-
-    background: var(--text);
-
-    border-radius: 50%;
-
-    top: 12%;
-
-    left: 5%;
-
-    box-shadow:
-        0 0 12px color-mix(in srgb,
-            var(--text) 60%,
-            transparent);
-
-    animation:
-        pulse 2s ease-in-out infinite;
-}
-
 
 @keyframes pulse {
 
     0%,
     100% {
-        opacity: .3;
-        transform: scale(.8);
+        opacity: 0.3;
+        transform: scale(0.8);
     }
 
     50% {
         opacity: 1;
-        transform: scale(1.2);
+        transform: scale(1.15);
     }
 }
 
-
-#greeting {
-
-    margin-top: 25px;
-
-    color: var(--muted);
-
-    font-size: 18px;
-}
-
-
-/* =========================
-   DASHBOARD
-========================= */
-
-.dashboard {
-
-    display: grid;
-
-    grid-template-columns:
-        1.5fr 1fr;
-
-    gap: 20px;
-}
-
-
-.card {
-
-    padding: 30px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 20px;
-
-    background: var(--card);
-
-    transition:
-        transform .25s ease,
-        border-color .25s ease;
-}
-
-
-.card:hover {
-
-    transform:
-        translateY(-3px);
-
-    border-color:
-        color-mix(in srgb,
-            var(--text) 20%,
-            var(--border));
-}
-
-
-.card-header {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-}
-
-
-.label {
-
-    color: var(--muted);
-
-    font-size: 11px;
-
-    letter-spacing: 3px;
-
-    margin-bottom: 8px;
-}
-
-
-.card h2 {
-    font-size: 22px;
-}
-
-
-#progressText {
-    color: var(--muted);
-}
-
-
-/* =========================
-   PROGRESS
-========================= */
-
-.progress {
-
-    height: 5px;
-
-    margin: 25px 0;
-
-    background:
-        var(--border);
-
-    border-radius: 20px;
-
-    overflow: hidden;
-}
-
-
-#progressBar {
-
-    width: 0%;
-
-    height: 100%;
-
-    background:
-        var(--accent);
-
-    transition:
-        width .35s ease;
-}
-
-
-/* =========================
-   ADD TASK
-========================= */
-
-.add-task {
-
-    display: flex;
-
-    gap: 8px;
-}
-
-
-#taskInput {
-
-    flex: 1;
-
-    min-width: 0;
-
-    padding: 14px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 10px;
-
-    outline: none;
-
-    background:
-        transparent;
-
-    color:
-        var(--text);
-}
-
-
-#taskInput:focus {
-
-    border-color:
-        var(--muted);
-}
-
-
-#addBtn {
-
-    width: 48px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background:
-        var(--accent);
-
-    color:
-        var(--bg);
-
-    font-size: 22px;
-
-    cursor: pointer;
-
-    transition:
-        transform .2s;
-}
-
-
-#addBtn:hover {
-    transform: scale(1.05);
-}
-
-
-/* =========================
-   TASK
-========================= */
-
-.task {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 15px 0;
-
-    border-bottom:
-        1px solid var(--border);
-}
-
-
-.task input {
-
-    accent-color:
-        var(--text);
-}
-
-
-.task span {
-    flex: 1;
-}
-
-
-.task.done span {
-
-    color:
-        var(--muted);
-
-    text-decoration:
-        line-through;
-}
-
-
-.delete {
-
-    border: none;
-
-    background:
-        transparent;
-
-    color:
-        var(--muted);
-
-    cursor: pointer;
-
-    font-size: 18px;
-
-    transition:
-        color .2s;
-}
-
-
-.delete:hover {
-    color: var(--text);
-}
-
-
-/* =========================
-   QUOTE
-========================= */
-
-.quote-card {
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: space-between;
-}
-
-
-.quote {
-
-    margin: 40px 0;
-
-    font-size: 25px;
-
-    line-height: 1.5;
-}
-
-
-.quote span {
-
-    color:
-        var(--muted);
-
-    font-size: 50px;
-}
-
-
-#quoteBtn {
-
-    padding: 13px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 10px;
-
-    background:
-        transparent;
-
-    color:
-        var(--text);
-
-    cursor: pointer;
-
-    transition:
-        .2s;
-}
-
-
-#quoteBtn:hover {
-
-    background:
-        var(--text);
-
-    color:
-        var(--bg);
-}
-
-
-/* =========================
-   FOOTER
-========================= */
-
-footer {
-
-    padding:
-        70px 0 30px;
-
-    text-align:
-        center;
-
-    color:
-        var(--muted);
-
-    font-size:
-        13px;
-}
-
-
-footer a {
-
-    color:
-        var(--text);
-
-    font-weight:
-        700;
-
-    text-decoration:
-        none;
-
-    border-bottom:
-        1px solid var(--text);
-
-    margin-left:
-        4px;
-
-    transition:
-        opacity .2s;
-}
-
-
-footer a:hover {
-    opacity: .55;
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
 @media (max-width: 750px) {
+    .hero {
+        padding-top: 65px;
+    }
 
     .dashboard {
         grid-template-columns: 1fr;
     }
 
-
-    #clock {
-
-        letter-spacing:
-            -4px;
-
-        font-size:
-            clamp(48px, 14vw, 80px);
+    .clock {
+        font-size: clamp(48px, 14vw, 80px);
+        letter-spacing: -4px;
     }
 
-
-    .clock-wrap::before {
-        width: 125%;
-        left: -12.5%;
+    .clock-orbit--one {
+        inset: -35% -13%;
     }
 
-
-    .clock-wrap::after {
-        width: 110%;
-        left: -5%;
+    .clock-orbit--two {
+        inset: -20% -7%;
     }
-
 }

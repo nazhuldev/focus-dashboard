@@ -3,160 +3,81 @@
 
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="description" content="A minimal productivity dashboard built with HTML, CSS and JavaScript.">
     <title>Focus Dashboard</title>
 
-    <!-- FAVICON -->
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23080808'/%3E%3Ccircle cx='50' cy='50' r='32' fill='none' stroke='%23ffffff' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%23ffffff'/%3E%3Cpath d='M50 50 L50 29 M50 50 L68 61' fill='none' stroke='%23ffffff' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M27 27 L34 20 M73 27 L66 20' fill='none' stroke='%23666666' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
 
     <link rel="stylesheet" href="style.css">
 </head>
 
-
 <body>
-
-    <header>
-
-        <div class="logo">
-            Focus<span>.</span>
-        </div>
-
-        <button id="themeBtn" aria-label="Change theme">
-            ☀️
-        </button>
-
+    <header class="header">
+        <a class="logo" href="/">Focus<span>.</span></a>
+        <button class="theme-toggle" id="themeBtn" type="button" aria-label="Switch theme">☀️</button>
     </header>
 
-
-    <main>
-
+    <main class="container">
         <section class="hero">
-
-            <p id="date"></p>
+            <p class="date" id="date"></p>
 
             <div class="clock-wrap">
-
-                <div class="clock-decoration"></div>
-
-                <h1 id="clock">
-                    00:00:00
-                </h1>
-
+                <div class="clock-orbit clock-orbit--one"></div>
+                <div class="clock-orbit clock-orbit--two"></div>
+                <span class="clock-dot"></span>
+                <h1 class="clock" id="clock">00:00:00</h1>
             </div>
 
-            <p id="greeting">
-                Good evening.
-            </p>
-
+            <p class="greeting" id="greeting">Good evening.</p>
         </section>
-
 
         <section class="dashboard">
-
-
-            <!-- TODO CARD -->
-
-            <div class="card todo-card">
-
+            <article class="card todo-card">
                 <div class="card-header">
-
                     <div>
-
-                        <p class="label">
-                            TASKS
-                        </p>
-
-                        <h2>
-                            Today's Tasks
-                        </h2>
-
+                        <span class="eyebrow">TASKS</span>
+                        <h2>Today's Tasks</h2>
                     </div>
-
-                    <span id="progressText">
-                        0%
-                    </span>
-
+                    <span class="progress-value" id="progressText">0%</span>
                 </div>
-
 
                 <div class="progress">
-
-                    <div id="progressBar"></div>
-
+                    <div class="progress-bar" id="progressBar"></div>
                 </div>
 
-
-                <div class="add-task">
-
-                    <input id="taskInput" type="text" placeholder="Add a new task..." autocomplete="off">
-
-                    <button id="addBtn">
-                        +
-                    </button>
-
+                <div class="task-form">
+                    <input id="taskInput" type="text" placeholder="Add a new task..." maxlength="120"
+                        autocomplete="off">
+                    <button id="addBtn" type="button" aria-label="Add task">+</button>
                 </div>
 
+                <div class="task-list" id="taskList"></div>
+            </article>
 
-                <div id="taskList"></div>
-
-            </div>
-
-
-
-            <!-- QUOTE CARD -->
-
-            <div class="card quote-card">
-
+            <article class="card quote-card">
                 <div>
+                    <span class="eyebrow">DAILY QUOTE</span>
 
-                    <p class="label">
-                        DAILY QUOTE
-                    </p>
-
-                    <div class="quote">
-
-                        <span>“</span>
-
-                        <p id="quote">
-                            Stay focused and keep going.
-                        </p>
-
-                        <span>”</span>
-
-                    </div>
-
+                    <blockquote class="quote">
+                        <span class="quote-mark">“</span>
+                        <p id="quote">Stay focused and keep going.</p>
+                        <span class="quote-mark">”</span>
+                    </blockquote>
                 </div>
 
-
-                <button id="quoteBtn">
-                    New quote
-                </button>
-
-            </div>
-
+                <button class="quote-button" id="quoteBtn" type="button">New quote</button>
+            </article>
         </section>
-
     </main>
 
-
-    <footer>
-
-        <span>
-            © 2026
-        </span>
-
-        <a href="https://github.com/nazhuldev" target="_blank" rel="noopener noreferrer">
-            Kyu Dev
-        </a>
-
+    <footer class="footer">
+        <span>© 2026</span>
+        <a href="https://github.com/nazhuldev" target="_blank" rel="noopener noreferrer">Kyu Dev</a>
     </footer>
 
-
     <script src="script.js"></script>
-
 </body>
 
 </html>

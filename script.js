@@ -1,405 +1,182 @@
-const clock =
-    document.getElementById("clock");
+const elements = {
+    clock: document.getElementById("clock"),
+    date: document.getElementById("date"),
+    greeting: document.getElementById("greeting"),
+    taskInput: document.getElementById("taskInput"),
+    taskList: document.getElementById("taskList"),
+    progressBar: document.getElementById("progressBar"),
+    progressText: document.getElementById("progressText"),
+    addButton: document.getElementById("addBtn"),
+    quote: document.getElementById("quote"),
+    quoteButton: document.getElementById("quoteBtn"),
+    themeButton: document.getElementById("themeBtn")
+};
 
-const date =
-    document.getElementById("date");
+const quotes = [
+    "Stay focused and keep going.",
+    "Small progress is still progress.",
+    "Your future self will thank you.",
+    "Focus on what you can control.",
+    "Consistency beats motivation.",
+    "Build quietly. Let the result speak.",
+    "One task at a time."
+];
 
-const greeting =
-    document.getElementById("greeting");
-
-const taskInput =
-    document.getElementById("taskInput");
-
-const taskList =
-    document.getElementById("taskList");
-
-const progressBar =
-    document.getElementById("progressBar");
-
-const progressText =
-    document.getElementById("progressText");
-
-const themeBtn =
-    document.getElementById("themeBtn");
-
-const quoteElement =
-    document.getElementById("quote");
-
-const quoteBtn =
-    document.getElementById("quoteBtn");
-
-
-/* =========================
-   CLOCK
-========================= */
+let tasks = JSON.parse(localStorage.getItem("focusTasks")) || [];
 
 function updateClock() {
-
     const now = new Date();
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
 
-    const hours =
-        String(now.getHours())
-            .padStart(2, "0");
+    elements.clock.textContent = `${hours}:${minutes}:${seconds}`;
+    elements.date.textContent = now.toLocaleDateString("vi-VN", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
 
-    const minutes =
-        String(now.getMinutes())
-            .padStart(2, "0");
-
-    const seconds =
-        String(now.getSeconds())
-            .padStart(2, "0");
-
-
-    clock.textContent =
-        `${hours}:${minutes}:${seconds}`;
-
-
-    date.textContent =
-        now.toLocaleDateString(
-            "vi-VN",
-            {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-            }
-        );
-
-
-    const hour =
-        now.getHours();
-
+    const hour = now.getHours();
 
     if (hour < 12) {
-
-        greeting.textContent =
-            "Good morning.";
-
+        elements.greeting.textContent = "Good morning.";
     } else if (hour < 18) {
-
-        greeting.textContent =
-            "Good afternoon.";
-
+        elements.greeting.textContent = "Good afternoon.";
     } else {
-
-        greeting.textContent =
-            "Good evening.";
-
+        elements.greeting.textContent = "Good evening.";
     }
 }
 
-
-updateClock();
-
-setInterval(
-    updateClock,
-    1000
-);
-
-
-/* =========================
-   TASKS
-========================= */
-
-let tasks =
-    JSON.parse(
-        localStorage.getItem("tasks")
-    ) || [];
-
-
 function saveTasks() {
-
-    localStorage.setItem(
-        "tasks",
-        JSON.stringify(tasks)
-    );
+    localStorage.setItem("focusTasks", JSON.stringify(tasks));
 }
 
-
 function updateProgress() {
-
-    if (tasks.length === 0) {
-
-        progressBar.style.width =
-            "0%";
-
-        progressText.textContent =
-            "0%";
-
+    if (!tasks.length) {
+        elements.progressBar.style.width = "0%";
+        elements.progressText.textContent = "0%";
         return;
     }
 
+    const completed = tasks.filter(task => task.done).length;
+    const percentage = Math.round((completed / tasks.length) * 100);
 
-    const completed =
-        tasks.filter(
-            task => task.done
-        ).length;
-
-
-    const percentage =
-        Math.round(
-            completed /
-            tasks.length *
-            100
-        );
-
-
-    progressBar.style.width =
-        `${percentage}%`;
-
-    progressText.textContent =
-        `${percentage}%`;
+    elements.progressBar.style.width = `${percentage}%`;
+    elements.progressText.textContent = `${percentage}%`;
 }
 
+function createTaskElement(task, index) {
+    const item = document.createElement("div");
+    item.className = `task${task.done ? " done" : ""}`;
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = task.done;
+    checkbox.setAttribute("aria-label", `Complete task: ${task.text}`);
+
+    const text = document.createElement("span");
+    text.className = "task-text";
+    text.textContent = task.text;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "delete-task";
+    deleteButton.type = "button";
+    deleteButton.textContent = "×";
+    deleteButton.setAttribute("aria-label", `Delete task: ${task.text}`);
+
+    checkbox.addEventListener("change", () => {
+        tasks[index].done = checkbox.checked;
+        saveTasks();
+        renderTasks();
+    });
+
+    deleteButton.addEventListener("click", () => {
+        tasks.splice(index, 1);
+        saveTasks();
+        renderTasks();
+    });
+
+    item.append(checkbox, text, deleteButton);
+    return item;
+}
 
 function renderTasks() {
+    elements.taskList.replaceChildren();
 
-    taskList.innerHTML = "";
-
-
-    tasks.forEach(
-        (task, index) => {
-
-            const item =
-                document.createElement("div");
-
-
-            item.className =
-                `task ${task.done
-                    ? "done"
-                    : ""
-                }`;
-
-
-            item.innerHTML = `
-                <input
-                    type="checkbox"
-                    ${task.done
-                    ? "checked"
-                    : ""
-                }
-                >
-
-                <span>
-                    ${escapeHTML(task.text)}
-                </span>
-
-                <button
-                    class="delete"
-                    aria-label="Delete task"
-                >
-                    ×
-                </button>
-            `;
-
-
-            const checkbox =
-                item.querySelector(
-                    "input"
-                );
-
-
-            const deleteBtn =
-                item.querySelector(
-                    ".delete"
-                );
-
-
-            checkbox.addEventListener(
-                "change",
-                () => {
-
-                    tasks[index].done =
-                        checkbox.checked;
-
-                    saveTasks();
-
-                    renderTasks();
-                }
-            );
-
-
-            deleteBtn.addEventListener(
-                "click",
-                () => {
-
-                    tasks.splice(
-                        index,
-                        1
-                    );
-
-                    saveTasks();
-
-                    renderTasks();
-                }
-            );
-
-
-            taskList.appendChild(item);
-
-        }
-    );
-
+    tasks.forEach((task, index) => {
+        elements.taskList.appendChild(createTaskElement(task, index));
+    });
 
     updateProgress();
 }
 
-
 function addTask() {
-
-    const text =
-        taskInput.value.trim();
-
+    const text = elements.taskInput.value.trim();
 
     if (!text) return;
-
 
     tasks.push({
         text,
         done: false
     });
 
-
-    taskInput.value = "";
-
-
+    elements.taskInput.value = "";
     saveTasks();
-
     renderTasks();
-
-    taskInput.focus();
+    elements.taskInput.focus();
 }
 
+function showRandomQuote() {
+    const currentQuote = elements.quote.textContent;
+    let nextQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
-function escapeHTML(text) {
+    while (quotes.length > 1 && nextQuote === currentQuote) {
+        nextQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    }
 
-    const div =
-        document.createElement("div");
-
-    div.textContent = text;
-
-    return div.innerHTML;
+    elements.quote.textContent = nextQuote;
 }
-
-
-document
-    .getElementById("addBtn")
-    .addEventListener(
-        "click",
-        addTask
-    );
-
-
-taskInput.addEventListener(
-    "keydown",
-    event => {
-
-        if (event.key === "Enter") {
-            addTask();
-        }
-
-    }
-);
-
-
-renderTasks();
-
-
-/* =========================
-   QUOTES
-========================= */
-
-const quotes = [
-
-    "Stay focused and keep going.",
-
-    "Small progress is still progress.",
-
-    "Your future self will thank you.",
-
-    "Focus on what you can control.",
-
-    "Consistency beats motivation.",
-
-    "Build quietly. Let the result speak.",
-
-    "One task at a time."
-
-];
-
-
-quoteBtn.addEventListener(
-    "click",
-    () => {
-
-        const random =
-            Math.floor(
-                Math.random() *
-                quotes.length
-            );
-
-
-        quoteElement.textContent =
-            quotes[random];
-
-    }
-);
-
-
-/* =========================
-   THEME
-========================= */
 
 function updateThemeIcon() {
-
-    const isLight =
-        document.body.classList
-            .contains("light");
-
-
-    themeBtn.textContent =
-        isLight
-            ? "🌙"
-            : "☀️";
-}
-
-
-themeBtn.addEventListener(
-    "click",
-    () => {
-
-        document.body.classList.toggle(
-            "light"
-        );
-
-
-        const isLight =
-            document.body.classList
-                .contains("light");
-
-
-        localStorage.setItem(
-            "theme",
-            isLight
-                ? "light"
-                : "dark"
-        );
-
-
-        updateThemeIcon();
-    }
-);
-
-
-if (
-    localStorage.getItem("theme")
-    === "light"
-) {
-
-    document.body.classList.add(
-        "light"
+    const isLight = document.body.classList.contains("light");
+    elements.themeButton.textContent = isLight ? "🌙" : "☀️";
+    elements.themeButton.setAttribute(
+        "aria-label",
+        isLight ? "Switch to dark theme" : "Switch to light theme"
     );
 }
 
+function toggleTheme() {
+    document.body.classList.toggle("light");
 
-updateThemeIcon();
+    const theme = document.body.classList.contains("light") ? "light" : "dark";
+    localStorage.setItem("focusTheme", theme);
+
+    updateThemeIcon();
+}
+
+function loadTheme() {
+    if (localStorage.getItem("focusTheme") === "light") {
+        document.body.classList.add("light");
+    }
+
+    updateThemeIcon();
+}
+
+elements.addButton.addEventListener("click", addTask);
+elements.quoteButton.addEventListener("click", showRandomQuote);
+elements.themeButton.addEventListener("click", toggleTheme);
+
+elements.taskInput.addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+        addTask();
+    }
+});
+
+updateClock();
+setInterval(updateClock, 1000);
+
+loadTheme();
+renderTasks();
