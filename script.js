@@ -1,73 +1,110 @@
-const clock = document.getElementById("clock");
-const date = document.getElementById("date");
-const greeting = document.getElementById("greeting");
+const clock =
+    document.getElementById("clock");
 
-const taskInput = document.getElementById("taskInput");
-const taskList = document.getElementById("taskList");
+const date =
+    document.getElementById("date");
 
-const progressBar = document.getElementById("progressBar");
-const progressText = document.getElementById("progressText");
+const greeting =
+    document.getElementById("greeting");
 
-const quotes = [
-    "Stay focused and keep going.",
-    "Small progress is still progress.",
-    "Your future self will thank you.",
-    "Focus on what you can control.",
-    "Do it now. Future you will be glad.",
-    "Consistency beats motivation."
-];
+const taskInput =
+    document.getElementById("taskInput");
+
+const taskList =
+    document.getElementById("taskList");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const progressText =
+    document.getElementById("progressText");
+
+const themeBtn =
+    document.getElementById("themeBtn");
+
+const quoteElement =
+    document.getElementById("quote");
+
+const quoteBtn =
+    document.getElementById("quoteBtn");
 
 
-// =========================
-// CLOCK
-// =========================
+/* =========================
+   CLOCK
+========================= */
 
 function updateClock() {
 
     const now = new Date();
 
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    const seconds = String(now.getSeconds()).padStart(2, "0");
+    const hours =
+        String(now.getHours())
+            .padStart(2, "0");
+
+    const minutes =
+        String(now.getMinutes())
+            .padStart(2, "0");
+
+    const seconds =
+        String(now.getSeconds())
+            .padStart(2, "0");
+
 
     clock.textContent =
         `${hours}:${minutes}:${seconds}`;
 
 
     date.textContent =
-        now.toLocaleDateString("vi-VN", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-        });
+        now.toLocaleDateString(
+            "vi-VN",
+            {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            }
+        );
 
 
-    const hour = now.getHours();
+    const hour =
+        now.getHours();
+
 
     if (hour < 12) {
-        greeting.textContent = "Good morning.";
-    }
-    else if (hour < 18) {
-        greeting.textContent = "Good afternoon.";
-    }
-    else {
-        greeting.textContent = "Good evening.";
+
+        greeting.textContent =
+            "Good morning.";
+
+    } else if (hour < 18) {
+
+        greeting.textContent =
+            "Good afternoon.";
+
+    } else {
+
+        greeting.textContent =
+            "Good evening.";
+
     }
 }
 
 
-setInterval(updateClock, 1000);
-
 updateClock();
 
+setInterval(
+    updateClock,
+    1000
+);
 
-// =========================
-// TODO
-// =========================
+
+/* =========================
+   TASKS
+========================= */
 
 let tasks =
-    JSON.parse(localStorage.getItem("tasks")) || [];
+    JSON.parse(
+        localStorage.getItem("tasks")
+    ) || [];
 
 
 function saveTasks() {
@@ -79,68 +116,129 @@ function saveTasks() {
 }
 
 
+function updateProgress() {
+
+    if (tasks.length === 0) {
+
+        progressBar.style.width =
+            "0%";
+
+        progressText.textContent =
+            "0%";
+
+        return;
+    }
+
+
+    const completed =
+        tasks.filter(
+            task => task.done
+        ).length;
+
+
+    const percentage =
+        Math.round(
+            completed /
+            tasks.length *
+            100
+        );
+
+
+    progressBar.style.width =
+        `${percentage}%`;
+
+    progressText.textContent =
+        `${percentage}%`;
+}
+
+
 function renderTasks() {
 
     taskList.innerHTML = "";
 
 
-    tasks.forEach((task, index) => {
+    tasks.forEach(
+        (task, index) => {
 
-        const item =
-            document.createElement("div");
-
-        item.className =
-            `task ${task.done ? "done" : ""}`;
+            const item =
+                document.createElement("div");
 
 
-        item.innerHTML = `
-            <input
-                type="checkbox"
-                ${task.done ? "checked" : ""}
-            >
-
-            <span>${task.text}</span>
-
-            <button class="delete">×</button>
-        `;
+            item.className =
+                `task ${task.done
+                    ? "done"
+                    : ""
+                }`;
 
 
-        const checkbox =
-            item.querySelector("input");
+            item.innerHTML = `
+                <input
+                    type="checkbox"
+                    ${task.done
+                    ? "checked"
+                    : ""
+                }
+                >
 
-        const deleteBtn =
-            item.querySelector(".delete");
+                <span>
+                    ${escapeHTML(task.text)}
+                </span>
 
-
-        checkbox.addEventListener(
-            "change",
-            () => {
-
-                tasks[index].done =
-                    checkbox.checked;
-
-                saveTasks();
-
-                renderTasks();
-            }
-        );
-
-
-        deleteBtn.addEventListener(
-            "click",
-            () => {
-
-                tasks.splice(index, 1);
-
-                saveTasks();
-
-                renderTasks();
-            }
-        );
+                <button
+                    class="delete"
+                    aria-label="Delete task"
+                >
+                    ×
+                </button>
+            `;
 
 
-        taskList.appendChild(item);
-    });
+            const checkbox =
+                item.querySelector(
+                    "input"
+                );
+
+
+            const deleteBtn =
+                item.querySelector(
+                    ".delete"
+                );
+
+
+            checkbox.addEventListener(
+                "change",
+                () => {
+
+                    tasks[index].done =
+                        checkbox.checked;
+
+                    saveTasks();
+
+                    renderTasks();
+                }
+            );
+
+
+            deleteBtn.addEventListener(
+                "click",
+                () => {
+
+                    tasks.splice(
+                        index,
+                        1
+                    );
+
+                    saveTasks();
+
+                    renderTasks();
+                }
+            );
+
+
+            taskList.appendChild(item);
+
+        }
+    );
 
 
     updateProgress();
@@ -157,16 +255,30 @@ function addTask() {
 
 
     tasks.push({
-        text: text,
+        text,
         done: false
     });
 
 
     taskInput.value = "";
 
+
     saveTasks();
 
     renderTasks();
+
+    taskInput.focus();
+}
+
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
 }
 
 
@@ -190,86 +302,104 @@ taskInput.addEventListener(
 );
 
 
-function updateProgress() {
-
-    if (tasks.length === 0) {
-
-        progressBar.style.width = "0%";
-        progressText.textContent = "0%";
-
-        return;
-    }
-
-
-    const completed =
-        tasks.filter(task => task.done).length;
-
-
-    const percent =
-        Math.round(
-            completed / tasks.length * 100
-        );
-
-
-    progressBar.style.width =
-        `${percent}%`;
-
-    progressText.textContent =
-        `${percent}%`;
-}
-
-
 renderTasks();
 
 
-// =========================
-// QUOTE
-// =========================
+/* =========================
+   QUOTES
+========================= */
 
-document
-    .getElementById("quoteBtn")
-    .addEventListener(
-        "click",
-        () => {
+const quotes = [
 
-            const random =
-                Math.floor(
-                    Math.random() * quotes.length
-                );
+    "Stay focused and keep going.",
 
-            document.getElementById("quote")
-                .textContent =
-                quotes[random];
-        }
-    );
+    "Small progress is still progress.",
+
+    "Your future self will thank you.",
+
+    "Focus on what you can control.",
+
+    "Consistency beats motivation.",
+
+    "Build quietly. Let the result speak.",
+
+    "One task at a time."
+
+];
 
 
-// =========================
-// THEME
-// =========================
+quoteBtn.addEventListener(
+    "click",
+    () => {
 
-document
-    .getElementById("themeBtn")
-    .addEventListener(
-        "click",
-        () => {
-
-            document.body.classList.toggle("light");
-
-            const light =
-                document.body.classList.contains("light");
-
-            localStorage.setItem(
-                "theme",
-                light ? "light" : "dark"
+        const random =
+            Math.floor(
+                Math.random() *
+                quotes.length
             );
-        }
-    );
+
+
+        quoteElement.textContent =
+            quotes[random];
+
+    }
+);
+
+
+/* =========================
+   THEME
+========================= */
+
+function updateThemeIcon() {
+
+    const isLight =
+        document.body.classList
+            .contains("light");
+
+
+    themeBtn.textContent =
+        isLight
+            ? "🌙"
+            : "☀️";
+}
+
+
+themeBtn.addEventListener(
+    "click",
+    () => {
+
+        document.body.classList.toggle(
+            "light"
+        );
+
+
+        const isLight =
+            document.body.classList
+                .contains("light");
+
+
+        localStorage.setItem(
+            "theme",
+            isLight
+                ? "light"
+                : "dark"
+        );
+
+
+        updateThemeIcon();
+    }
+);
 
 
 if (
     localStorage.getItem("theme")
     === "light"
 ) {
-    document.body.classList.add("light");
+
+    document.body.classList.add(
+        "light"
+    );
 }
+
+
+updateThemeIcon();

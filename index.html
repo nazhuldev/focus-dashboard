@@ -3,19 +3,31 @@
 
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Focus Dashboard</title>
 
+    <!-- FAVICON -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23080808'/%3E%3Ccircle cx='50' cy='50' r='32' fill='none' stroke='%23ffffff' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%23ffffff'/%3E%3Cpath d='M50 50 L50 29 M50 50 L68 61' fill='none' stroke='%23ffffff' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M27 27 L34 20 M73 27 L66 20' fill='none' stroke='%23666666' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 
 <body>
 
     <header>
-        <div class="logo">Focus<span>.</span></div>
 
-        <button id="themeBtn">☀️</button>
+        <div class="logo">
+            Focus<span>.</span>
+        </div>
+
+        <button id="themeBtn" aria-label="Change theme">
+            ☀️
+        </button>
+
     </header>
 
 
@@ -25,7 +37,15 @@
 
             <p id="date"></p>
 
-            <h1 id="clock">00:00:00</h1>
+            <div class="clock-wrap">
+
+                <div class="clock-decoration"></div>
+
+                <h1 id="clock">
+                    00:00:00
+                </h1>
+
+            </div>
 
             <p id="greeting">
                 Good evening.
@@ -36,30 +56,46 @@
 
         <section class="dashboard">
 
-            <!-- TODO -->
+
+            <!-- TODO CARD -->
 
             <div class="card todo-card">
 
                 <div class="card-header">
+
                     <div>
-                        <p class="label">TASKS</p>
-                        <h2>Today's Tasks</h2>
+
+                        <p class="label">
+                            TASKS
+                        </p>
+
+                        <h2>
+                            Today's Tasks
+                        </h2>
+
                     </div>
 
-                    <span id="progressText">0%</span>
+                    <span id="progressText">
+                        0%
+                    </span>
+
                 </div>
 
 
                 <div class="progress">
+
                     <div id="progressBar"></div>
+
                 </div>
 
 
                 <div class="add-task">
 
-                    <input id="taskInput" type="text" placeholder="Add a new task...">
+                    <input id="taskInput" type="text" placeholder="Add a new task..." autocomplete="off">
 
-                    <button id="addBtn">+</button>
+                    <button id="addBtn">
+                        +
+                    </button>
 
                 </div>
 
@@ -69,21 +105,31 @@
             </div>
 
 
-            <!-- QUOTE -->
+
+            <!-- QUOTE CARD -->
 
             <div class="card quote-card">
 
-                <p class="label">DAILY QUOTE</p>
+                <div>
 
-                <div class="quote">
-                    <span>“</span>
-
-                    <p id="quote">
-                        Stay focused and keep going.
+                    <p class="label">
+                        DAILY QUOTE
                     </p>
 
-                    <span>”</span>
+                    <div class="quote">
+
+                        <span>“</span>
+
+                        <p id="quote">
+                            Stay focused and keep going.
+                        </p>
+
+                        <span>”</span>
+
+                    </div>
+
                 </div>
+
 
                 <button id="quoteBtn">
                     New quote
@@ -97,10 +143,15 @@
 
 
     <footer>
-        <span>© 2026</span>
+
+        <span>
+            © 2026
+        </span>
+
         <a href="https://github.com/nazhuldev" target="_blank" rel="noopener noreferrer">
             Kyu Dev
         </a>
+
     </footer>
 
 
