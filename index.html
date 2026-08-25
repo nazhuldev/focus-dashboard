@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Focus Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">Focus<span>.</span></div>
+
+        <button id="themeBtn">☀️</button>
+    </header>
+
+
+    <main>
+
+        <section class="hero">
+
+            <p id="date"></p>
+
+            <h1 id="clock">00:00:00</h1>
+
+            <p id="greeting">
+                Good evening.
+            </p>
+
+        </section>
+
+
+        <section class="dashboard">
+
+            <!-- TODO -->
+
+            <div class="card todo-card">
+
+                <div class="card-header">
+                    <div>
+                        <p class="label">TASKS</p>
+                        <h2>Today's Tasks</h2>
+                    </div>
+
+                    <span id="progressText">0%</span>
+                </div>
+
+
+                <div class="progress">
+                    <div id="progressBar"></div>
+                </div>
+
+
+                <div class="add-task">
+
+                    <input id="taskInput" type="text" placeholder="Add a new task...">
+
+                    <button id="addBtn">+</button>
+
+                </div>
+
+
+                <div id="taskList"></div>
+
+            </div>
+
+
+            <!-- QUOTE -->
+
+            <div class="card quote-card">
+
+                <p class="label">DAILY QUOTE</p>
+
+                <div class="quote">
+                    <span>“</span>
+
+                    <p id="quote">
+                        Stay focused and keep going.
+                    </p>
+
+                    <span>”</span>
+                </div>
+
+                <button id="quoteBtn">
+                    New quote
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        <span>© 2026</span>
+        <a href="https://github.com/nazhuldev" target="_blank" rel="noopener noreferrer">
+            Kyu Dev
+        </a>
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
