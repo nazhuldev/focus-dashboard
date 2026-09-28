@@ -2,4 +2,4 @@
 
 A minimalist productivity dashboard.
 
-🌐 **Live Demo:** https://focusdashb.netlify.app/
+🌐 **Live Demo:** https://nazhuldev.github.io
