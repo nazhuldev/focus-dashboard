@@ -2,4 +2,4 @@
 
 A minimalist productivity dashboard.
 
-🌐 **Live Demo:** nazhuldev.github.io/focus-dashboard/
+🌐 **Live Demo:** https://nazhuldev.github.io/focus-dashboard/
